@@ -1,27 +1,26 @@
-var = int(input("Введите значение"))
-
-
-if var == 1:
-    print("Январь")
-if var == 2:
-    print("Февраль")
-if var == 3:
-    print("Март")
-if var == 4:
-    print("Апрель")
-if var == 5:
-    print("Май")
-if var == 6:
-    print("Июнь")
-if var == 7:
-    print("Июль")
-if var == 8:
-    print("Август")
-if var == 9:
-    print("Сентябрь")
-if var == 10:
-    print("Октябрь")
-if var == 11:
-    print("Ноябрь")
-if var == 12:
-    print("Декабрь")
+str = input('введите стоку')
+schet=0
+for i in str:
+    if i != ' ':
+        schet+=1
+    else:
+        word=str[:schet]
+        word=word[::-1]
+        str=str[schet+1:]
+        count = 0
+        str2 = str
+        for i in str:
+            if i != ' ':
+                schet +=1
+            else:
+                if str2.startswith(' '):
+                    str2 =str2[1:]
+                else:
+                    str2 = str
+                word2 = str2[:schet]
+                schet = 0
+                if word==word2:
+                    print(word[::-1],word2)
+                    word=''
+                else:
+                    word2=''
