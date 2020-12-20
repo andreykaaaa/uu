@@ -1,26 +1,23 @@
-str = input('введите стоку')
-schet=0
-for i in str:
-    if i != ' ':
-        schet+=1
-    else:
-        word=str[:schet]
-        word=word[::-1]
-        str=str[schet+1:]
-        count = 0
-        str2 = str
-        for i in str:
-            if i != ' ':
-                schet +=1
-            else:
-                if str2.startswith(' '):
-                    str2 =str2[1:]
-                else:
-                    str2 = str
-                word2 = str2[:schet]
-                schet = 0
-                if word==word2:
-                    print(word[::-1],word2)
-                    word=''
-                else:
-                    word2=''
+allcards=int(input("введите размер колоды карт : "))
+cards=[random.randint(0,100) for i in range(allcards)]
+firstpart = []
+secpart = []
+mixing = []
+def printList (oneList):
+    for elem in oneList:
+        print(elem, end=' ')
+    print()
+
+def mix (twoList):
+    if len(twoList)%2==1:
+        twoList.append(random.randint(0,100))
+    for i in range(1,len(twoList)+1):
+        if i ==len(twoList)/2:
+            for j in range(0,i):
+                firstpart.append(twoList[j])
+            for k in range(i,len(twoList)):
+                secpart.append(twoList[k])
+            firstpart.reverse()
+            secpart.reverse()
+            twoList=[firstpart + secpart for c in range(1) for d in range(1)]
+    print(twoList)
