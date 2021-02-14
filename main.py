@@ -1,23 +1,88 @@
-allcards=int(input("введите размер колоды карт : "))
-cards=[random.randint(0,100) for i in range(allcards)]
-firstpart = []
-secpart = []
-mixing = []
-def printList (oneList):
-    for elem in oneList:
-        print(elem, end=' ')
-    print()
+import sqlite3
+import argparse
 
-def mix (twoList):
-    if len(twoList)%2==1:
-        twoList.append(random.randint(0,100))
-    for i in range(1,len(twoList)+1):
-        if i ==len(twoList)/2:
-            for j in range(0,i):
-                firstpart.append(twoList[j])
-            for k in range(i,len(twoList)):
-                secpart.append(twoList[k])
-            firstpart.reverse()
-            secpart.reverse()
-            twoList=[firstpart + secpart for c in range(1) for d in range(1)]
-    print(twoList)
+connectionObject=sqlite3.connect('ContactBookDatabase.db')
+cursorObject=connectionObject.cursor()
+
+contacts = []
+
+
+FORMAT_STR = '{:<15} {:>12}'
+
+
+def list(contacts):
+    print(FORMAT_STR.format('Name', 'Phone'))
+    for contact in contacts:
+        print(FORMAT_STR.format(
+            contact['name'],
+            contact['phone']
+        ))
+
+
+def find(contacts):
+    print("Введите имя контакта:")
+    name = input("> ")
+
+    for contact in contacts:
+        if contact['name'] == name:
+            print(FORMAT_STR.format(
+                contact['name'],
+                contact['phone']
+            ))
+            break
+    else:
+        print("Контакт не найден")
+
+
+def delete(contacts):
+    print("Введите контакт: ")
+    name = input('> ')
+    for contact in contacts:
+        if contact['name'] == name:
+            print("Вы хотите удалить контакт %s (yes/no)?: " % name)
+            name_del = input('> ')
+            if name_del == 'yes':
+                contacts.remove(contact)
+                print("Вы удалили контакт %s " % name)
+
+
+def add(contacts):
+    print("Введите имя контакта:")
+    name = input("> ")
+    print("Введите телефон контакта:")
+    phone = input("> ")
+    new_contact = {
+        'name': name,
+        'phone': phone
+    }
+    contacts.append(new_contact)
+
+    print('Контакт сохранён')
+
+
+print("Добро пожаловать в телефонную книгу.")
+print("""Введите команду:
+* list - чтобы посмотреть список контактов.
+* find - найти контакт по имени
+* add  - добавить контакт
+* del  - удаление контакта
+* edit - изменение контакта 
+* exit - выход""")
+
+while True:
+    print("\nВведите команду: ")
+    command = input('> ')
+    if command == 'list':
+        list(contacts)
+    elif command == 'find':
+        find(contacts)
+    elif command == 'add':
+        add(contacts)
+    elif command == 'del':
+        delete(contacts)
+    elif command == 'edit':
+        edit(contacts)
+    elif command == 'exit':
+        break
+    else:
+        print("Неизвестная команда")
